@@ -266,7 +266,6 @@ plugins:
         - if: "[qtype65] || (query_is_non_domain)"
           exec:
             - black_hole
-            - forward_local
             - ttl_1h
             - _return
 
