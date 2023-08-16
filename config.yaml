@@ -2,7 +2,7 @@
 # https://apad.pro/easymosdns
 log:
     file: "./mosdns.log"
-    level: info
+    level: error
 
 data_providers:
   - tag: chinalist
@@ -40,7 +40,7 @@ plugins:
     type: cache
     args:
       size: 8192
-      redis: "redis://127.0.0.1:6379/0"
+      #redis: "redis://127.0.0.1:6379/0"
       lazy_cache_ttl: 86400
       cache_everything: true
       lazy_cache_reply_ttl: 1
@@ -49,7 +49,7 @@ plugins:
     args:
       size: 131072
       compress_resp: true
-      redis: "redis://127.0.0.1:6379/0"
+      #redis: "redis://127.0.0.1:6379/0"
       lazy_cache_ttl: 86400
       cache_everything: true
       lazy_cache_reply_ttl: 5
@@ -256,17 +256,13 @@ plugins:
     type: sequence
     args:
       exec:
-        # 详细记录显示插件
-        - _query_summary
-        
         # 域名映射IP
         - hosts
 
         # 屏蔽TYPE65与无效类型请求
         - if: "[qtype65] || (query_is_non_domain)"
           exec:
-            - black_hole
-            - ttl_1h
+            - _new_nxdomain_response
             - _return
 
         # 优化PRT与ANY类型请求
