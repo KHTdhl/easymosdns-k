@@ -406,4 +406,4 @@ servers:
       #  key: "/etc/mosdns/yourdomain.key"    # TLS 所需密钥文件。
 
 api:
-    http: "127.0.0.1:9080"
+    http: "0.0.0.0:9080"
